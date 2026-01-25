@@ -33,7 +33,7 @@ public class JDBCUtil {
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection(url, username, password);
         } catch (Exception e) {
             e.printStackTrace();

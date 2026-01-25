@@ -6,6 +6,7 @@ import com.rev_hire.model.UserAccount;
 import com.rev_hire.service.IUserAccountService;
 import com.rev_hire.service.UserAccountServiceImpl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserAccountController {
@@ -13,23 +14,26 @@ public class UserAccountController {
 
     private static IUserAccountService userAccountService = new UserAccountServiceImpl();
 
-    public boolean addUserAccount(UserAccount userAccount) {
+    public boolean addUserAccount(UserAccount userAccount) throws SQLException {
         return userAccountService.addUserAccount(userAccount);
     }
 
 
     public boolean updateUserAccount(UserAccount userAccount) {
-        return false;
+
+        return userAccountService.updateUserAccount(userAccount);
     }
 
 
     public boolean deleteUserAccount(int id) {
-        return false;
+
+        return userAccountService.deleteUserAccount(id);
     }
 
 
     public UserAccount getUserAccount(int id) {
-        return null;
+
+        return userAccountService.getUserAccount(id);
     }
 
 
