@@ -16,6 +16,10 @@ public class JDBCUtil {
                 .getClassLoader()
                 .getResourceAsStream("db.properties")) {
 
+            if (is == null) {
+                throw new RuntimeException("db.properties not found in classpath");
+            }
+
             Properties props = new Properties();
             props.load(is);
 
@@ -33,8 +37,9 @@ public class JDBCUtil {
     public static Connection getConnection() {
         Connection con = null;
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection(url, username, password);
+            con.setAutoCommit(true); // ✅ enable auto-commit
         } catch (Exception e) {
             e.printStackTrace();
         }

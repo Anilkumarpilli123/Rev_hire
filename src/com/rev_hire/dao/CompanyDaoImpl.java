@@ -9,16 +9,21 @@ import java.util.List;
 
 public class CompanyDaoImpl implements ICompanyDao {
 
+    // ================= CREATE =================
     @Override
     public boolean addCompany(Company company) {
-        String sql = "INSERT INTO companies VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        String sql =
+                "INSERT INTO companies (company_id, name, industry, company_size, description, website, location) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, company.getCompanyId());
             ps.setString(2, company.getName());
             ps.setString(3, company.getIndustry());
-            ps.setString(4, company.getSize());
+            ps.setInt(4, company.getSize());
             ps.setString(5, company.getDescription());
             ps.setString(6, company.getWebsite());
             ps.setString(7, company.getLocation());
@@ -31,15 +36,20 @@ public class CompanyDaoImpl implements ICompanyDao {
         return false;
     }
 
+    // ================= UPDATE =================
     @Override
     public boolean updateCompany(Company company) {
-        String sql = "UPDATE companies SET name=?, industry=?, size=?, description=?, website=?, location=? WHERE company_id=?";
+
+        String sql =
+                "UPDATE companies SET name=?, industry=?, company_size=?, description=?, website=?, location=? " +
+                        "WHERE company_id=?";
+
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, company.getName());
             ps.setString(2, company.getIndustry());
-            ps.setString(3, company.getSize());
+            ps.setInt(3, company.getSize());
             ps.setString(4, company.getDescription());
             ps.setString(5, company.getWebsite());
             ps.setString(6, company.getLocation());
@@ -53,9 +63,12 @@ public class CompanyDaoImpl implements ICompanyDao {
         return false;
     }
 
+    // ================= DELETE =================
     @Override
     public boolean deleteCompany(int companyId) {
+
         String sql = "DELETE FROM companies WHERE company_id=?";
+
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -68,9 +81,12 @@ public class CompanyDaoImpl implements ICompanyDao {
         return false;
     }
 
+    // ================= GET ONE =================
     @Override
     public Company getCompany(int companyId) {
+
         String sql = "SELECT * FROM companies WHERE company_id=?";
+
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -82,7 +98,7 @@ public class CompanyDaoImpl implements ICompanyDao {
                 c.setCompanyId(rs.getInt("company_id"));
                 c.setName(rs.getString("name"));
                 c.setIndustry(rs.getString("industry"));
-                c.setSize(rs.getString("size"));
+                c.setSize(rs.getInt("company_size"));
                 c.setDescription(rs.getString("description"));
                 c.setWebsite(rs.getString("website"));
                 c.setLocation(rs.getString("location"));
@@ -95,8 +111,10 @@ public class CompanyDaoImpl implements ICompanyDao {
         return null;
     }
 
+    // ================= GET ALL =================
     @Override
     public List<Company> getAllCompanies() {
+
         List<Company> list = new ArrayList<>();
         String sql = "SELECT * FROM companies";
 
@@ -109,7 +127,7 @@ public class CompanyDaoImpl implements ICompanyDao {
                 c.setCompanyId(rs.getInt("company_id"));
                 c.setName(rs.getString("name"));
                 c.setIndustry(rs.getString("industry"));
-                c.setSize(rs.getString("size"));
+                c.setSize(rs.getInt("company_size"));
                 c.setDescription(rs.getString("description"));
                 c.setWebsite(rs.getString("website"));
                 c.setLocation(rs.getString("location"));
