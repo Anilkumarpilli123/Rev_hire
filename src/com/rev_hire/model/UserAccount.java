@@ -4,7 +4,7 @@ public class UserAccount {
     private int id;
     private String email;
     private String password;
-    private PlayList playList;
+    //private PlayList playList;
 
     public int getId() {
         return id;

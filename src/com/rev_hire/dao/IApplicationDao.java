@@ -13,4 +13,3 @@ public interface IApplicationDao {
 
     List<Application> getApplicationsByJobSeeker(int jobSeekerId);
 }
-
