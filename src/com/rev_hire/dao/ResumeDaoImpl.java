@@ -77,7 +77,7 @@ public class ResumeDaoImpl implements IResumeDao {
 
     @Override
     public Resume getResume(int resumeId) {
-        String sql = "SELECT * FROM resumes WHERE resume_id=?";
+        String sql = "SELECT * FROM resumes  WHERE resume_id=?";
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -104,7 +104,7 @@ public class ResumeDaoImpl implements IResumeDao {
 
     @Override
     public List<Resume> getAllResumes() {
-        String sql = "SELECT * FROM resumes ORDER BY resume_id"; // <-- sorted
+        String sql = "SELECT * FROM resumes ORDER BY resume_id ASC"; // <-- sorted
         List<Resume> list = new ArrayList<>();
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
