@@ -4,7 +4,11 @@ public class UserAccount {
     private int id;
     private String email;
     private String password;
+<<<<<<< HEAD
    //private PlayList playList;
+=======
+
+>>>>>>> bd12ebd (resume module initial implementation)
 
     public int getId() {
         return id;
