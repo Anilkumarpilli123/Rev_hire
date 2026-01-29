@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EmployerController {
 
-    private static IEmployerService service = new EmployerServiceImpl();
+    private IEmployerService service = new EmployerServiceImpl();
 
     public boolean addEmployer(Employer e) {
         return service.addEmployer(e);
@@ -28,5 +28,9 @@ public class EmployerController {
 
     public List<Employer> getAllEmployers() {
         return service.getAllEmployers();
+    }
+
+    public Employer getEmployerByUserId(int userId) {
+        return service.getEmployerByUserId(userId); // call DAO method
     }
 }

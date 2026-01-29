@@ -2,10 +2,11 @@ package com.rev_hire.model;
 
 public class Employer {
 
-    private int employerId;
+    private int employerId; // DB generated
     private int userId;
     private int companyId;
 
+    // Getters & Setters
     public int getEmployerId() {
         return employerId;
     }

@@ -1,32 +1,31 @@
 package com.rev_hire.service;
 
-import com.rev_hire.dao.ApplicationDaoImpl;
-import com.rev_hire.dao.IApplicationDao;
+import com.rev_hire.dao.*;
 import com.rev_hire.model.Application;
 
 import java.util.List;
 
 public class ApplicationServiceImpl implements IApplicationService {
 
-    private static IApplicationDao applicationDao = new ApplicationDaoImpl();
+    private static IApplicationDao dao = new ApplicationDaoImpl();
 
-    @Override
     public boolean applyJob(Application application) {
-        return applicationDao.applyJob(application);
+        return dao.applyJob(application);
     }
 
-    @Override
-    public boolean withdrawApplication(int applicationId, String reason) {
-        return applicationDao.withdrawApplication(applicationId, reason);
-    }
-
-    @Override
-    public Application getApplicationById(int applicationId) {
-        return applicationDao.getApplicationById(applicationId);
-    }
-
-    @Override
     public List<Application> getApplicationsByJobSeeker(int jobSeekerId) {
-        return applicationDao.getApplicationsByJobSeeker(jobSeekerId);
+        return dao.getApplicationsByJobSeeker(jobSeekerId);
+    }
+
+    public List<Application> getApplicationsByJob(int jobId) {
+        return dao.getApplicationsByJob(jobId);
+    }
+
+    public boolean updateStatus(int applicationId, String status) {
+        return dao.updateStatus(applicationId, status);
+    }
+
+    public boolean withdrawApplication(int applicationId, String reason) {
+        return dao.withdrawApplication(applicationId, reason);
     }
 }

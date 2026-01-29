@@ -1,37 +1,41 @@
 package com.rev_hire.service;
 
 import com.rev_hire.dao.EmployerDaoImpl;
-import com.rev_hire.dao.IEmployerDao;
 import com.rev_hire.model.Employer;
 
 import java.util.List;
 
 public class EmployerServiceImpl implements IEmployerService {
 
-    private static IEmployerDao employerDao = new EmployerDaoImpl();
+    private EmployerDaoImpl dao = new EmployerDaoImpl();
 
     @Override
-    public boolean addEmployer(Employer employer) {
-        return employerDao.addEmployer(employer);
+    public boolean addEmployer(Employer e) {
+        return dao.addEmployer(e);
     }
 
     @Override
-    public Employer getEmployer(int employerId) {
-        return employerDao.getEmployer(employerId);
+    public Employer getEmployer(int id) {
+        return dao.getEmployer(id);
     }
 
     @Override
-    public boolean updateEmployer(Employer employer) {
-        return employerDao.updateEmployer(employer);
+    public boolean updateEmployer(Employer e) {
+        return dao.updateEmployer(e);
     }
 
     @Override
-    public boolean deleteEmployer(int employerId) {
-        return employerDao.deleteEmployer(employerId);
+    public boolean deleteEmployer(int id) {
+        return dao.deleteEmployer(id);
     }
 
     @Override
     public List<Employer> getAllEmployers() {
-        return employerDao.getAllEmployers();
+        return dao.getAllEmployers();
+    }
+
+    @Override
+    public Employer getEmployerByUserId(int userId) {
+        return dao.getEmployerByUserId(userId); // call the DAO method
     }
 }

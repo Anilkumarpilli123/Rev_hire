@@ -13,12 +13,9 @@ public class Application {
     private Date appliedDate;
     private String withdrawReason;
 
-    // ---------- Getters & Setters ----------
-
     public int getApplicationId() {
         return applicationId;
     }
-
     public void setApplicationId(int applicationId) {
         this.applicationId = applicationId;
     }
@@ -26,7 +23,6 @@ public class Application {
     public int getJobId() {
         return jobId;
     }
-
     public void setJobId(int jobId) {
         this.jobId = jobId;
     }
@@ -34,7 +30,6 @@ public class Application {
     public int getJobSeekerId() {
         return jobSeekerId;
     }
-
     public void setJobSeekerId(int jobSeekerId) {
         this.jobSeekerId = jobSeekerId;
     }
@@ -42,7 +37,6 @@ public class Application {
     public int getResumeId() {
         return resumeId;
     }
-
     public void setResumeId(int resumeId) {
         this.resumeId = resumeId;
     }
@@ -50,7 +44,6 @@ public class Application {
     public String getCoverLetter() {
         return coverLetter;
     }
-
     public void setCoverLetter(String coverLetter) {
         this.coverLetter = coverLetter;
     }
@@ -58,7 +51,6 @@ public class Application {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }
@@ -66,7 +58,6 @@ public class Application {
     public Date getAppliedDate() {
         return appliedDate;
     }
-
     public void setAppliedDate(Date appliedDate) {
         this.appliedDate = appliedDate;
     }
@@ -74,7 +65,6 @@ public class Application {
     public String getWithdrawReason() {
         return withdrawReason;
     }
-
     public void setWithdrawReason(String withdrawReason) {
         this.withdrawReason = withdrawReason;
     }
