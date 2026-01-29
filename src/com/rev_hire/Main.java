@@ -1,64 +1,81 @@
 package com.rev_hire;
 
+import com.rev_hire.controller.CompanyController;
 import com.rev_hire.model.Company;
-import com.rev_hire.dao.ICompanyDao;
-import com.rev_hire.dao.CompanyDaoImpl;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
-        ICompanyDao companyDao = new CompanyDaoImpl();
+
+        CompanyController controller = new CompanyController();
         Scanner sc = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
+
             System.out.println("\n==== COMPANY MANAGEMENT MENU ====");
             System.out.println("1. Create Company");
-            System.out.println("2. View Company");
-            System.out.println("3. Update Company");
-            System.out.println("4. Delete Company");
+            System.out.println("2. View Company (by Name)");
+            System.out.println("3. Update Company (by Name)");
+            System.out.println("4. Delete Company (by ID)");
             System.out.println("5. Exit");
             System.out.println("6. View All Companies");
             System.out.print("Enter choice: ");
+
             int choice = sc.nextInt();
-            sc.nextLine(); // consume newline
+            sc.nextLine();
 
             switch (choice) {
-                case 1: // Create
-                    System.out.print("Enter Company ID: ");
-                    int createId = sc.nextInt(); sc.nextLine();
-                    System.out.print("Enter Name: ");
-                    String createName = sc.nextLine();
-                    System.out.print("Enter Industry: ");
-                    String createIndustry = sc.nextLine();
-                    System.out.print("Enter Size: ");
-                    int createSize = sc.nextInt(); sc.nextLine();
-                    System.out.print("Enter Description: ");
-                    String createDesc = sc.nextLine();
-                    System.out.print("Enter Website: ");
-                    String createWebsite = sc.nextLine();
-                    System.out.print("Enter Location: ");
-                    String createLocation = sc.nextLine();
 
-                    // ✅ Use no-arg constructor + setters
-                    Company newCompany = new Company();
-                    newCompany.setCompanyId(createId);
-                    newCompany.setName(createName);
-                    newCompany.setIndustry(createIndustry);
-                    newCompany.setSize(createSize);
-                    newCompany.setDescription(createDesc);
-                    newCompany.setWebsite(createWebsite);
-                    newCompany.setLocation(createLocation);
+                // ================= CREATE =================
+                case 1:
+                    try {
+                        System.out.print("Enter Name: ");
+                        String name = sc.nextLine();
 
-                    System.out.println("Company Added: " + companyDao.addCompany(newCompany));
+                        System.out.print("Enter Industry: ");
+                        String industry = sc.nextLine();
+
+                        System.out.print("Enter Size (e.g., 50-60): ");
+                        String size = sc.nextLine();
+
+                        System.out.print("Enter Description: ");
+                        String description = sc.nextLine();
+
+                        System.out.print("Enter Website: ");
+                        String website = sc.nextLine();
+
+                        System.out.print("Enter Location: ");
+                        String location = sc.nextLine();
+
+                        Company newCompany = new Company();
+                        newCompany.setName(name);
+                        newCompany.setIndustry(industry);
+                        newCompany.setSize(size);
+                        newCompany.setDescription(description);
+                        newCompany.setWebsite(website);
+                        newCompany.setLocation(location);
+
+                        System.out.println(
+                                "Company Added: " + controller.addCompany(newCompany)
+                        );
+
+                    } catch (SQLException e) {
+                        System.out.println("Database Error while adding company!");
+                        e.printStackTrace();
+                    }
                     break;
 
-                case 2: // View
-                    System.out.print("Enter Company ID: ");
-                    int viewId = sc.nextInt(); sc.nextLine();
-                    Company viewCompany = companyDao.getCompany(viewId);
+                // ================= VIEW BY NAME =================
+                case 2:
+                    System.out.print("Enter Company Name: ");
+                    String viewName = sc.nextLine();
+
+                    Company viewCompany = controller.getCompanyByName(viewName);
                     if (viewCompany != null) {
                         System.out.println("Name: " + viewCompany.getName());
                         System.out.println("Industry: " + viewCompany.getIndustry());
@@ -71,57 +88,65 @@ public class Main {
                     }
                     break;
 
-                case 3: // Update
-                    System.out.print("Enter Company ID to Update: ");
-                    int updateId = sc.nextInt(); sc.nextLine();
-                    Company updateCompany = companyDao.getCompany(updateId);
-                    if (updateCompany != null) {
-                        System.out.print("Enter New Name: ");
-                        updateCompany.setName(sc.nextLine());
-                        System.out.print("Enter New Industry: ");
-                        updateCompany.setIndustry(sc.nextLine());
-                        System.out.print("Enter New Size: ");
-                        updateCompany.setSize(sc.nextInt()); sc.nextLine();
-                        System.out.print("Enter New Description: ");
-                        updateCompany.setDescription(sc.nextLine());
-                        System.out.print("Enter New Website: ");
-                        updateCompany.setWebsite(sc.nextLine());
-                        System.out.print("Enter New Location: ");
-                        updateCompany.setLocation(sc.nextLine());
+                // ================= UPDATE BY NAME =================
+                case 3:
+                    System.out.print("Enter Company Name to Update: ");
+                    String updateName = sc.nextLine();
 
-                        System.out.println("Company Updated: " + companyDao.updateCompany(updateCompany));
-                    } else {
-                        System.out.println("Company Not Found!");
+                    Company updatedData = new Company();
+
+                    System.out.print("Enter New Industry: ");
+                    updatedData.setIndustry(sc.nextLine());
+
+                    System.out.print("Enter New Size (e.g., 50-60): ");
+                    updatedData.setSize(sc.nextLine());
+
+                    System.out.print("Enter New Description: ");
+                    updatedData.setDescription(sc.nextLine());
+
+                    System.out.print("Enter New Website: ");
+                    updatedData.setWebsite(sc.nextLine());
+
+                    System.out.print("Enter New Location: ");
+                    updatedData.setLocation(sc.nextLine());
+
+                    // Calls new controller/service/DAO logic
+                    boolean updated = controller.updateCompanyByName(updateName, updatedData);
+                    System.out.println("Company Updated: " + updated);
+
+                    if (!updated) {
+                        System.out.println("Update failed: Company not found or database error.");
                     }
                     break;
 
-                case 4: // Delete
+                // ================= DELETE =================
+                case 4:
                     System.out.print("Enter Company ID to Delete: ");
-                    int deleteId = sc.nextInt(); sc.nextLine();
-                    System.out.println("Company Deleted: " + companyDao.deleteCompany(deleteId));
+                    int deleteId = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.println(
+                            "Company Deleted: " + controller.deleteCompany(deleteId)
+                    );
                     break;
 
-                case 5: // Exit
+                case 5:
                     exit = true;
                     System.out.println("Exiting...");
                     break;
 
-                case 6: // View All
-                    List<Company> allCompanies = companyDao.getAllCompanies();
-                    if (allCompanies.isEmpty()) {
+                case 6:
+                    List<Company> companies = controller.getAllCompanies();
+                    if (companies.isEmpty()) {
                         System.out.println("No companies found!");
                     } else {
-                        System.out.printf("%-10s %-20s %-10s %-12s %-25s %-25s %-15s%n",
-                                "ID", "Name", "Industry", "Size", "Description", "Website", "Location");
-                        for (Company c : allCompanies) {
-                            System.out.printf("%-10d %-20s %-10s %-12d %-25s %-25s %-15s%n",
-                                    c.getCompanyId(),
-                                    c.getName(),
-                                    c.getIndustry(),
-                                    c.getSize(),
-                                    c.getDescription(),
-                                    c.getWebsite(),
-                                    c.getLocation());
+                        for (Company c : companies) {
+                            System.out.println(
+                                    c.getCompanyId() + " | " +
+                                            c.getName() + " | " +
+                                            c.getIndustry() + " | " +
+                                            c.getSize()
+                            );
                         }
                     }
                     break;
@@ -130,7 +155,6 @@ public class Main {
                     System.out.println("Invalid Choice!");
             }
         }
-
         sc.close();
     }
 }

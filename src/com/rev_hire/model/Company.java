@@ -5,7 +5,7 @@ public class Company {
     private int companyId;
     private String name;
     private String industry;
-    private int size;              // ✅ MUST be int
+    private String size;              // ✅ MUST be int
     private String description;
     private String website;
     private String location;
@@ -34,11 +34,11 @@ public class Company {
         this.industry = industry;
     }
 
-    public int getSize() {          // ✅ int
+    public String getSize() {          // ✅ int
         return size;
     }
 
-    public void setSize(int size) { // ✅ int
+    public void setSize(String size) { // ✅ int
         this.size = size;
     }
 
