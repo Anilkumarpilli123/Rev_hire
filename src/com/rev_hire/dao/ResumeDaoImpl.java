@@ -3,97 +3,50 @@ package com.rev_hire.dao;
 import com.rev_hire.model.Resume;
 import com.rev_hire.util.JDBCUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 
 public class ResumeDaoImpl implements IResumeDao {
 
     @Override
-    public boolean addResume(Resume resume) {
-        String sql = "INSERT INTO resumes (resume_id, job_seeker_id, objective, education, experience, skills, projects) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public boolean addResume(Resume r) {
+
+        String sql = """
+            INSERT INTO resumes
+            (job_seeker_id, objective, education, experience, skills, projects)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """;
+
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, resume.getResumeId());
-            ps.setInt(2, resume.getJobSeekerId());
-            ps.setString(3, resume.getObjective());
-            ps.setString(4, resume.getEducation());
-            ps.setString(5, resume.getExperience());
-            ps.setString(6, resume.getSkills());
-            ps.setString(7, resume.getProjects());
+            ps.setInt(1, r.getJobSeekerId());
+            ps.setString(2, r.getObjective());
+            ps.setString(3, r.getEducation());
+            ps.setString(4, r.getExperience());
+            ps.setString(5, r.getSkills());
+            ps.setString(6, r.getProjects());
 
-            int rows = ps.executeUpdate();
-            return rows > 0;
+            return ps.executeUpdate() == 1;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     @Override
-    public boolean updateResume(Resume resume) {
-        String sql = "UPDATE resumes SET job_seeker_id=?, objective=?, education=?, experience=?, skills=?, projects=? " +
-                "WHERE resume_id=?";
+    public Resume getResumeByJobSeeker(int jobSeekerId) {
+
+        String sql = "SELECT * FROM resumes WHERE job_seeker_id=?";
+
         try (Connection con = JDBCUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, resume.getJobSeekerId());
-            ps.setString(2, resume.getObjective());
-            ps.setString(3, resume.getEducation());
-            ps.setString(4, resume.getExperience());
-            ps.setString(5, resume.getSkills());
-            ps.setString(6, resume.getProjects());
-            ps.setInt(7, resume.getResumeId());
-
-            int rows = ps.executeUpdate();
-            return rows > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public boolean deleteResume(int resumeId) {
-        String sql = "DELETE FROM resumes WHERE resume_id=?";
-        try (Connection con = JDBCUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, resumeId);
-            int rows = ps.executeUpdate();
-            return rows > 0;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public Resume getResume(int resumeId) {
-        String sql = "SELECT * FROM resumes  WHERE resume_id=?";
-        try (Connection con = JDBCUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, resumeId);
+            ps.setInt(1, jobSeekerId);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Resume r = new Resume();
-                r.setResumeId(rs.getInt("resume_id"));
-                r.setJobSeekerId(rs.getInt("job_seeker_id"));
-                r.setObjective(rs.getString("objective"));
-                r.setEducation(rs.getString("education"));
-                r.setExperience(rs.getString("experience"));
-                r.setSkills(rs.getString("skills"));
-                r.setProjects(rs.getString("projects"));
-                return r;
+                return mapResume(rs);
             }
 
         } catch (Exception e) {
@@ -103,29 +56,59 @@ public class ResumeDaoImpl implements IResumeDao {
     }
 
     @Override
-    public List<Resume> getAllResumes() {
-        String sql = "SELECT * FROM resumes ORDER BY resume_id ASC"; // <-- sorted
-        List<Resume> list = new ArrayList<>();
-        try (Connection con = JDBCUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+    public boolean updateResume(Resume r) {
 
-            while (rs.next()) {
-                Resume r = new Resume();
-                r.setResumeId(rs.getInt("resume_id"));
-                r.setJobSeekerId(rs.getInt("job_seeker_id"));
-                r.setObjective(rs.getString("objective"));
-                r.setEducation(rs.getString("education"));
-                r.setExperience(rs.getString("experience"));
-                r.setSkills(rs.getString("skills"));
-                r.setProjects(rs.getString("projects"));
-                list.add(r);
-            }
+        String sql = """
+            UPDATE resumes SET
+            objective=?, education=?, experience=?, skills=?, projects=?
+            WHERE job_seeker_id=?
+        """;
+
+        try (Connection con = JDBCUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, r.getObjective());
+            ps.setString(2, r.getEducation());
+            ps.setString(3, r.getExperience());
+            ps.setString(4, r.getSkills());
+            ps.setString(5, r.getProjects());
+            ps.setInt(6, r.getJobSeekerId());
+
+            return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return false;
     }
 
+    @Override
+    public boolean deleteResume(int jobSeekerId) {
+
+        String sql = "DELETE FROM resumes WHERE job_seeker_id=?";
+
+        try (Connection con = JDBCUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, jobSeekerId);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private Resume mapResume(ResultSet rs) throws SQLException {
+
+        Resume r = new Resume();
+        r.setResumeId(rs.getInt("resume_id"));
+        r.setJobSeekerId(rs.getInt("job_seeker_id"));
+        r.setObjective(rs.getString("objective"));
+        r.setEducation(rs.getString("education"));
+        r.setExperience(rs.getString("experience"));
+        r.setSkills(rs.getString("skills"));
+        r.setProjects(rs.getString("projects"));
+        return r;
+    }
 }

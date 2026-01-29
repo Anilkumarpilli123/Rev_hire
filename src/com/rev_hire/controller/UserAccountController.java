@@ -14,30 +14,46 @@ public class UserAccountController {
 
     private static IUserAccountService userAccountService = new UserAccountServiceImpl();
 
-    public boolean addUserAccount(UserAccount userAccount) throws SQLException {
-        return userAccountService.addUserAccount(userAccount);
+//    public boolean addUserAccount(UserAccount userAccount) throws SQLException {
+//        return userAccountService.addUserAccount(userAccount);
+//    }
+//
+//
+//    public boolean updateUserAccount(UserAccount userAccount) {
+//
+//        return userAccountService.updateUserAccount(userAccount);
+//    }
+//
+//
+//    public boolean deleteUserAccount(int id) {
+//
+//        return userAccountService.deleteUserAccount(id);
+//    }
+//
+//
+//    public UserAccount getUserAccount(int id) {
+//
+//        return userAccountService.getUserAccount(id);
+//    }
+//
+//
+//    public List<UserAccount> getAllUserAccounts() {
+//        return List.of();
+//    }
+
+    public UserAccount login(String email, String password, String role) {
+        return userAccountService.login(email, password, role);
     }
 
-
-    public boolean updateUserAccount(UserAccount userAccount) {
-
-        return userAccountService.updateUserAccount(userAccount);
+    public boolean register(UserAccount user) throws SQLException {
+        return userAccountService.addUserAccount(user);
     }
 
-
-    public boolean deleteUserAccount(int id) {
-
-        return userAccountService.deleteUserAccount(id);
+    public boolean addUserAccount(UserAccount user) {
+        return false;
     }
 
-
-    public UserAccount getUserAccount(int id) {
-
-        return userAccountService.getUserAccount(id);
-    }
-
-
-    public List<UserAccount> getAllUserAccounts() {
-        return List.of();
+    public boolean isEmailExists(String email) {
+        return false;
     }
 }

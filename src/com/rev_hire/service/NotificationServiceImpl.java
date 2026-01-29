@@ -1,7 +1,6 @@
 package com.rev_hire.service;
 
-import com.rev_hire.dao.INotificationDao;
-import com.rev_hire.dao.NotificationDaoImpl;
+import com.rev_hire.dao.*;
 import com.rev_hire.model.Notification;
 
 import java.util.List;
@@ -10,29 +9,19 @@ public class NotificationServiceImpl implements INotificationService {
 
     private static INotificationDao dao = new NotificationDaoImpl();
 
-    @Override
-    public boolean addNotification(Notification notification) {
+    public boolean sendNotification(Notification notification) {
         return dao.addNotification(notification);
     }
 
-    @Override
-    public boolean updateNotification(Notification notification) {
-        return dao.updateNotification(notification);
+    public List<Notification> getUserNotifications(int userId) {
+        return dao.getNotificationsByUser(userId);
     }
 
-    @Override
+    public boolean markAsRead(int notificationId) {
+        return dao.markAsRead(notificationId);
+    }
+
     public boolean deleteNotification(int notificationId) {
         return dao.deleteNotification(notificationId);
     }
-
-    @Override
-    public Notification getNotification(int notificationId) {
-        return dao.getNotification(notificationId);
-    }
-
-    @Override
-    public List<Notification> getAllNotifications() {
-        return dao.getAllNotifications();
-    }
 }
-

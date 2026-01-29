@@ -5,10 +5,8 @@ import java.util.List;
 
 public interface INotificationService {
 
-    boolean addNotification(Notification notification);
-    boolean updateNotification(Notification notification);
+    boolean sendNotification(Notification notification);
+    List<Notification> getUserNotifications(int userId);
+    boolean markAsRead(int notificationId);
     boolean deleteNotification(int notificationId);
-    Notification getNotification(int notificationId);
-    List<Notification> getAllNotifications();
 }
-

@@ -1,6 +1,7 @@
 package com.rev_hire.model;
 
 public class Resume {
+
     private int resumeId;
     private int jobSeekerId;
     private String objective;
@@ -9,11 +10,9 @@ public class Resume {
     private String skills;
     private String projects;
 
-    // Getters and Setters
     public int getResumeId() {
         return resumeId;
     }
-
     public void setResumeId(int resumeId) {
         this.resumeId = resumeId;
     }
@@ -21,7 +20,6 @@ public class Resume {
     public int getJobSeekerId() {
         return jobSeekerId;
     }
-
     public void setJobSeekerId(int jobSeekerId) {
         this.jobSeekerId = jobSeekerId;
     }
@@ -29,7 +27,6 @@ public class Resume {
     public String getObjective() {
         return objective;
     }
-
     public void setObjective(String objective) {
         this.objective = objective;
     }
@@ -37,7 +34,6 @@ public class Resume {
     public String getEducation() {
         return education;
     }
-
     public void setEducation(String education) {
         this.education = education;
     }
@@ -45,7 +41,6 @@ public class Resume {
     public String getExperience() {
         return experience;
     }
-
     public void setExperience(String experience) {
         this.experience = experience;
     }
@@ -53,7 +48,6 @@ public class Resume {
     public String getSkills() {
         return skills;
     }
-
     public void setSkills(String skills) {
         this.skills = skills;
     }
@@ -61,7 +55,6 @@ public class Resume {
     public String getProjects() {
         return projects;
     }
-
     public void setProjects(String projects) {
         this.projects = projects;
     }
