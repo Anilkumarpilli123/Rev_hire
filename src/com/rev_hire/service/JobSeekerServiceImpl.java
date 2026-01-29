@@ -1,16 +1,25 @@
 package com.rev_hire.service;
 
-import com.rev_hire.dao.*;
+import com.rev_hire.dao.JobSeekerDao;
+import com.rev_hire.dao.JobSeekerDaoImpl;
 import com.rev_hire.model.JobSeeker;
-import java.util.List;
 
-public class JobSeekerServiceImpl implements IJobSeekerService {
+public class JobSeekerServiceImpl implements JobSeekerService {
 
-    private static IJobSeekerDao dao = new JobSeekerDaoImpl();
+    private final JobSeekerDao dao = new JobSeekerDaoImpl();
 
-    public boolean addJobSeeker(JobSeeker js) { return dao.addJobSeeker(js); }
-    public boolean updateJobSeeker(JobSeeker js) { return dao.updateJobSeeker(js); }
-    public boolean deleteJobSeeker(int id) { return dao.deleteJobSeeker(id); }
-    public JobSeeker getJobSeeker(int id) { return dao.getJobSeeker(id); }
-    public List<JobSeeker> getAllJobSeekers() { return dao.getAllJobSeekers(); }
+    @Override
+    public JobSeeker getJobSeekerByUserId(int userId) {
+        return dao.getJobSeekerByUserId(userId);
+    }
+
+    @Override
+    public boolean createJobSeeker(JobSeeker js) {
+        return dao.createJobSeeker(js);
+    }
+
+    @Override
+    public int getResumeId(int jobSeekerId) {
+        return dao.getResumeId(jobSeekerId);
+    }
 }

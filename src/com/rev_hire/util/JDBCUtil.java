@@ -12,32 +12,37 @@ public class JDBCUtil {
     private static String password;
 
     static {
-        try (InputStream is = JDBCUtil.class
-                .getClassLoader()
-                .getResourceAsStream("db.properties")) {
-
+        try {
             Properties props = new Properties();
+
+            InputStream is = JDBCUtil.class
+                    .getClassLoader()
+                    .getResourceAsStream("db.properties");
+
+            if (is == null) {
+                throw new RuntimeException("db.properties file not found");
+            }
+
             props.load(is);
 
-            url = props.getProperty("db.url");
-            username = props.getProperty("db.username");
-            password = props.getProperty("db.password");
+            url = props.getProperty("jdbc:oracle:thin:@db.freesql.com:1521/23ai_34ui2");
+            username = props.getProperty("UDAYKIRAN6522_SCHEMA_Z1K61");
+            password = props.getProperty("71AZL53!YMHJOC3XE0uVRZRWFDV93E");
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize JDBC", e);
         }
     }
 
     private JDBCUtil() {}
 
     public static Connection getConnection() {
-        Connection con = null;
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            con = DriverManager.getConnection(url, username, password);
+            return DriverManager.getConnection("jdbc:oracle:thin:@db.freesql.com:1521/23ai_34ui2", "UDAYKIRAN6522_SCHEMA_Z1K61", "71AZL53!YMHJOC3XE0uVRZRWFDV93E");
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Database connection failed", e);
         }
-        return con;
     }
 }

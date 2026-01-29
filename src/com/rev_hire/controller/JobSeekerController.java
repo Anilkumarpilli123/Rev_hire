@@ -1,33 +1,44 @@
 package com.rev_hire.controller;
 
 import com.rev_hire.model.JobSeeker;
-import com.rev_hire.service.IJobSeekerService;
+import com.rev_hire.service.JobSeekerService;
 import com.rev_hire.service.JobSeekerServiceImpl;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class JobSeekerController {
 
-    private static IJobSeekerService jobSeekerService = new JobSeekerServiceImpl();
+    private final JobSeekerService service = new JobSeekerServiceImpl();
 
-    public boolean addJobSeeker(JobSeeker jobSeeker) throws SQLException {
-        return jobSeekerService.addJobSeeker(jobSeeker);
+    public JobSeeker getJobSeekerByUserId(int userId) {
+        return service.getJobSeekerByUserId(userId);
     }
 
-    public boolean updateJobSeeker(JobSeeker jobSeeker) {
-        return jobSeekerService.updateJobSeeker(jobSeeker);
+    public boolean createJobSeeker(JobSeeker js) {
+        return service.createJobSeeker(js);
     }
 
-    public boolean deleteJobSeeker(int jobSeekerId) {
-        return jobSeekerService.deleteJobSeeker(jobSeekerId);
+    public void viewProfile(int userId) {
+        JobSeeker js = service.getJobSeekerByUserId(userId);
+
+        if (js == null) {
+            System.out.println("Profile not found");
+            return;
+        }
+
+        System.out.println("""
+            ===== MY PROFILE =====
+            Name       : %s
+            Phone      : %s
+            Experience : %d years
+            Completion : %d%%
+            """.formatted(
+                js.getName(),
+                js.getPhone(),
+                js.getExperienceYears(),
+                js.getProfileCompletion()
+        ));
     }
 
-    public JobSeeker getJobSeeker(int jobSeekerId) {
-        return jobSeekerService.getJobSeeker(jobSeekerId);
-    }
-
-    public List<JobSeeker> getAllJobSeekers() {
-        return jobSeekerService.getAllJobSeekers();
+    public int getResumeId(int jobSeekerId) {
+        return service.getResumeId(jobSeekerId);
     }
 }
