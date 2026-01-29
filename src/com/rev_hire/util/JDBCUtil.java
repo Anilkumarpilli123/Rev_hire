@@ -39,7 +39,7 @@ public class JDBCUtil {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection(url, username, password);
-            con.setAutoCommit(true); // ✅ enable auto-commit
+            con.setAutoCommit(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

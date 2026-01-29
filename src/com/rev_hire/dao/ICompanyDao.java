@@ -6,17 +6,8 @@ import java.util.List;
 public interface ICompanyDao {
 
     boolean addCompany(Company company);
-
-    boolean updateCompany(Company company);
-
-    // ================= UPDATE BY NAME =================
-    boolean updateCompanyByName(String companyName, Company updatedData);
-
-    boolean deleteCompany(int companyId);
-
-    Company getCompany(int companyId);
-
-    Company getCompanyByName(String companyName);
-
+    Company getCompanyById(int companyId);
     List<Company> getAllCompanies();
+    boolean updateCompany(Company company);
+    boolean deleteCompany(int companyId);
 }
