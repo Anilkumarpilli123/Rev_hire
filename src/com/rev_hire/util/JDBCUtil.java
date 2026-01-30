@@ -2,6 +2,8 @@ package com.rev_hire.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Properties;
 import java.io.InputStream;
 
@@ -35,9 +37,22 @@ public class JDBCUtil {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
             con = DriverManager.getConnection(url, username, password);
+
+            System.out.println("Connected as user: " +
+                    con.getMetaData().getUserName());
+
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(
+                    "SELECT SYS_CONTEXT('USERENV','CON_NAME') FROM dual"
+            );
+            if (rs.next()) {
+                System.out.println("DB Container : " + rs.getString(1));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return con;
     }
+
+
 }
