@@ -1,17 +1,19 @@
-# Rev Hire – Java Project
-
-## Team Members
-1. Uday Kiran Panuku
-2. Anil Kumar Pilli – Team Lead
-3. Rahul Podishetty
-4. Sri Varsha Pogiri
-5. Priyanka Ambati
-
-## Technology
-- Java
-- Git & GitHub
-
-## Description
-A basic Java project demonstrating GitHub collaboration and project structure.
-
+# IntelliJ IDEA build output
 out/
+
+# Maven build output
+target/
+
+# IntelliJ IDEA project files
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/shelf/
+.idea/sonarlint/
+
+# Logs
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
