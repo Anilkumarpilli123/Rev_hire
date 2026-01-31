@@ -4,8 +4,12 @@ import com.rev_hire.model.JobSeeker;
 import com.rev_hire.util.JDBCUtil;
 
 import java.sql.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JobSeekerDaoImpl implements JobSeekerDao {
+
+    private static final Logger logger = LogManager.getLogger(JobSeekerDaoImpl.class);
 
     @Override
     public JobSeeker getJobSeekerByUserId(int userId) {
@@ -13,7 +17,7 @@ public class JobSeekerDaoImpl implements JobSeekerDao {
         String sql = "SELECT * FROM job_seekers WHERE user_id = ?";
 
         try (Connection con = JDBCUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
@@ -30,7 +34,7 @@ public class JobSeekerDaoImpl implements JobSeekerDao {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error in getJobSeekerByUserId", e);
         }
         return null;
     }
@@ -39,13 +43,13 @@ public class JobSeekerDaoImpl implements JobSeekerDao {
     public boolean createJobSeeker(JobSeeker js) {
 
         String sql = """
-            INSERT INTO job_seekers
-            (user_id, name, phone, experience_years, profile_completion)
-            VALUES (?, ?, ?, ?, ?)
-        """;
+                    INSERT INTO job_seekers
+                    (user_id, name, phone, experience_years, profile_completion)
+                    VALUES (?, ?, ?, ?, ?)
+                """;
 
         try (Connection con = JDBCUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, js.getUserId());
             ps.setString(2, js.getName());
@@ -56,7 +60,7 @@ public class JobSeekerDaoImpl implements JobSeekerDao {
             return ps.executeUpdate() == 1;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error in createJobSeeker", e);
         }
         return false;
     }
@@ -68,7 +72,7 @@ public class JobSeekerDaoImpl implements JobSeekerDao {
         String sql = "SELECT resume_id FROM resumes WHERE job_seeker_id = ?";
 
         try (Connection con = JDBCUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, jobSeekerId);
             ResultSet rs = ps.executeQuery();
@@ -78,7 +82,7 @@ public class JobSeekerDaoImpl implements JobSeekerDao {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error in getResumeId", e);
         }
         return -1; // resume not found
     }
