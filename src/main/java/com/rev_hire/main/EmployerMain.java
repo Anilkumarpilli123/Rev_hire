@@ -7,10 +7,10 @@ import java.util.Scanner;
 
 public class EmployerMain {
 
-    public static void start(int userId) {
+    public static void start(Scanner sc, int userId) {
 
         EmployerController controller = new EmployerController();
-        Scanner sc = new Scanner(System.in);
+        // Scanner sc = new Scanner(System.in);
 
         Employer employer = controller.getEmployerByUserId(userId);
 
@@ -18,8 +18,13 @@ public class EmployerMain {
         if (employer == null) {
             System.out.println("👋 Welcome New Employer!");
             System.out.print("Enter Company ID to link: ");
-            int companyId = sc.nextInt();
-            sc.nextLine();
+            int companyId;
+            try {
+                companyId = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("❌ Invalid ID.");
+                return;
+            }
 
             boolean created = controller.createEmployer(userId, companyId);
 
@@ -37,23 +42,28 @@ public class EmployerMain {
         // ================= EMPLOYER MENU =================
         while (true) {
             System.out.println("""
-            ===== EMPLOYER MENU =====
-            1. Post New Job
-            2. View My Jobs
-            3. View Applicants
-            4. Update Application Status
-            5. Logout
-            """);
+                    ===== EMPLOYER MENU =====
+                    1. Post New Job
+                    2. View My Jobs
+                    3. View Applicants
+                    4. Update Application Status
+                    5. Logout
+                    """);
 
             System.out.print("Enter choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("❌ Please enter a valid number");
+                continue;
+            }
 
             switch (choice) {
-                case 1 -> JobMain.start(employer.getCompanyId());
-                case 2 -> JobMain.start(employer.getCompanyId());
-                case 3 -> ApplicationEmployerMain.start();
-                case 4 -> ApplicationEmployerMain.start();
+                case 1 -> JobMain.start(sc, employer.getCompanyId());
+                case 2 -> JobMain.start(sc, employer.getCompanyId());
+                case 3 -> ApplicationEmployerMain.start(sc);
+                case 4 -> ApplicationEmployerMain.start(sc);
                 case 5 -> {
                     System.out.println("👋 Logged out");
                     return;

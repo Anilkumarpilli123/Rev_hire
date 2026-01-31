@@ -7,24 +7,29 @@ import java.util.Scanner;
 
 public class ResumeMain {
 
-    public static void start(int jobSeekerId) {
+    public static void start(Scanner sc, int jobSeekerId) {
 
-        Scanner sc = new Scanner(System.in);
+        // Scanner sc = new Scanner(System.in);
         ResumeController controller = new ResumeController();
 
         while (true) {
             System.out.println("""
-                ==== RESUME MENU ====
-                1. Create Resume
-                2. View Resume
-                3. Update Resume
-                4. Delete Resume
-                5. Back
-                """);
+                    ==== RESUME MENU ====
+                    1. Create Resume
+                    2. View Resume
+                    3. Update Resume
+                    4. Delete Resume
+                    5. Back
+                    """);
 
             System.out.print("Enter choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("❌ Please enter a valid number");
+                continue;
+            }
 
             switch (choice) {
 

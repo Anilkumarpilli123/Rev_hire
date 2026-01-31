@@ -61,53 +61,40 @@ public class UserAccountServiceImpl implements IUserAccountService {
 
     @Override
     public boolean addUserAccount(UserAccount userAccount) throws SQLException {
-
-        System.out.println("➡ Registering user: " + userAccount.getEmail());
         logger.info("Attempting to register user: {}", userAccount.getEmail());
 
         if (userAccountDao.emailExists(userAccount.getEmail())) {
-            System.out.println("Email already registered");
             logger.warn("Email already exists: {}", userAccount.getEmail());
             return false;
         }
 
-        boolean inserted = userAccountDao.addUserAccount(userAccount);
-        System.out.println("Insert result = " + inserted);
+        // Hash the password before saving
+        String originalPassword = userAccount.getPassword();
+        userAccount.setPassword(com.rev_hire.util.PasswordUtil.hashPassword(originalPassword));
 
-        return inserted;
+        return userAccountDao.addUserAccount(userAccount);
     }
-
-    //
-    // @Override
-    // public boolean updateUserAccount(UserAccount userAccount) {
-    // return false;
-    // }
-    //
-    // @Override
-    // public boolean deleteUserAccount(int id) {
-    // return false;
-    // }
-    //
-    // @Override
-    // public UserAccount getUserAccount(int id) {
-    // return null;
-    // }
-    //
-    // @Override
-    // public List<UserAccount> getAllUserAccounts() {
-    // return List.of();
-    // }
-    //
-    // @Override
-    // public boolean isEmailExists(String email) {
-    // return false;
-    // }
 
     @Override
     public UserAccount login(String email, String password, String role) {
         logger.info("Login attempt for email: {}, role: {}", email, role);
-        return userAccountDao.login(email, password, role);
 
+        // In a real flow, we would fetch the user by email first, then check hashed
+        // password
+        // But for now, we'll hash the input password and compare in DAO
+        String hashedPassword = com.rev_hire.util.PasswordUtil.hashPassword(password);
+        return userAccountDao.login(email, hashedPassword, role);
     }
 
+    @Override
+    public boolean resetPasswordByEmail(String email, String newPassword) {
+        logger.info("Resetting password for email: {}", email);
+        String hashedPassword = com.rev_hire.util.PasswordUtil.hashPassword(newPassword);
+        return userAccountDao.updatePasswordByEmail(email, hashedPassword);
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        return userAccountDao.emailExists(email);
+    }
 }

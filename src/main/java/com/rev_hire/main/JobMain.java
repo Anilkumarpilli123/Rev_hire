@@ -8,24 +8,29 @@ import java.util.Scanner;
 
 public class JobMain {
 
-    public static void start(int companyId) {
+    public static void start(Scanner sc, int companyId) {
 
-        Scanner sc = new Scanner(System.in);
+        // Scanner sc = new Scanner(System.in);
         JobController controller = new JobController();
 
         while (true) {
             System.out.println("""
-                ==== JOB MENU ====
-                1. Post New Job
-                2. View My Jobs
-                3. Update Job
-                4. Delete Job
-                5. Back
-                """);
+                    ==== JOB MENU ====
+                    1. Post New Job
+                    2. View My Jobs
+                    3. Update Job
+                    4. Delete Job
+                    5. Back
+                    """);
 
             System.out.print("Enter choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("❌ Please enter a valid number");
+                continue;
+            }
 
             switch (choice) {
 
@@ -40,8 +45,11 @@ public class JobMain {
                     System.out.print("Skills: ");
                     j.setSkillsRequired(sc.nextLine());
                     System.out.print("Experience (years): ");
-                    j.setExperienceRequired(sc.nextInt());
-                    sc.nextLine();
+                    try {
+                        j.setExperienceRequired(Integer.parseInt(sc.nextLine()));
+                    } catch (Exception e) {
+                        j.setExperienceRequired(0);
+                    }
                     System.out.print("Education: ");
                     j.setEducationRequired(sc.nextLine());
                     System.out.print("Location: ");
@@ -59,14 +67,17 @@ public class JobMain {
                 }
 
                 case 2 -> controller.getJobsByCompany(companyId)
-                        .forEach(j ->
-                                System.out.println(j.getJobId() + " - " + j.getTitle())
-                        );
+                        .forEach(j -> System.out.println(j.getJobId() + " - " + j.getTitle()));
 
                 case 3 -> {
                     System.out.print("Job ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine());
+                    } catch (Exception e) {
+                        System.out.println("❌ Invalid ID.");
+                        continue;
+                    }
 
                     Job j = controller.getJob(id);
                     if (j != null) {

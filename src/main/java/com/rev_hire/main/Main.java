@@ -15,13 +15,13 @@ public class Main {
 
         while (true) {
             System.out.println("""
-                =================================
-                     WELCOME TO REVHIRE
-                =================================
-                1. Login
-                2. Register
-                3. Exit
-                """);
+                    =================================
+                         WELCOME TO REVHIRE
+                    =================================
+                    1. Login
+                    2. Register
+                    3. Exit
+                    """);
             System.out.print("Enter choice: ");
 
             int choice;
@@ -75,8 +75,11 @@ public class Main {
         if (user == null) {
             System.out.println("❌ Invalid credentials");
 
-            System.out.print("User not found. Do you want to register? (Y/N): ");
-            if (sc.nextLine().equalsIgnoreCase("Y")) {
+            System.out.print("Forgot Password? (Y/N) or Register? (R): ");
+            String choice = sc.nextLine().trim().toUpperCase();
+            if (choice.equals("Y")) {
+                forgotPasswordFlow(sc, controller);
+            } else if (choice.equals("R")) {
                 registerFlow(sc, controller);
             }
             return;
@@ -86,9 +89,9 @@ public class Main {
 
         // 🔁 ROLE BASED REDIRECTION
         if (user.getRole().equals("EMPLOYER")) {
-            EmployerMain.start(user.getId());
+            EmployerMain.start(sc, user.getId());
         } else {
-            JobSeekerMain.start(user.getId());
+            JobSeekerMain.start(sc, user.getId());
         }
     }
 
@@ -113,8 +116,13 @@ public class Main {
             String role = sc.nextLine().trim().toUpperCase();
 
             // VALIDATIONS
-            if (email.isEmpty() || password.isEmpty()) {
-                System.out.println("❌ Email and Password cannot be empty");
+            if (!com.rev_hire.util.ValidationUtil.isValidEmail(email)) {
+                System.out.println("❌ Invalid email format");
+                return;
+            }
+
+            if (!com.rev_hire.util.ValidationUtil.isValidPassword(password)) {
+                System.out.println("❌ Password weak! Must have 8+ chars, Uppercase, Lowercase, Digit & Special char");
                 return;
             }
 

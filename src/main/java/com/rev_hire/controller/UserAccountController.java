@@ -10,36 +10,36 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserAccountController {
-//    private static IUserAccountDao userAccountDao = new UserAccountDaoImpl();
+    // private static IUserAccountDao userAccountDao = new UserAccountDaoImpl();
 
     private static IUserAccountService userAccountService = new UserAccountServiceImpl();
 
-//    public boolean addUserAccount(UserAccount userAccount) throws SQLException {
-//        return userAccountService.addUserAccount(userAccount);
-//    }
-//
-//
-//    public boolean updateUserAccount(UserAccount userAccount) {
-//
-//        return userAccountService.updateUserAccount(userAccount);
-//    }
-//
-//
-//    public boolean deleteUserAccount(int id) {
-//
-//        return userAccountService.deleteUserAccount(id);
-//    }
-//
-//
-//    public UserAccount getUserAccount(int id) {
-//
-//        return userAccountService.getUserAccount(id);
-//    }
-//
-//
-//    public List<UserAccount> getAllUserAccounts() {
-//        return List.of();
-//    }
+    // public boolean addUserAccount(UserAccount userAccount) throws SQLException {
+    // return userAccountService.addUserAccount(userAccount);
+    // }
+    //
+    //
+    // public boolean updateUserAccount(UserAccount userAccount) {
+    //
+    // return userAccountService.updateUserAccount(userAccount);
+    // }
+    //
+    //
+    // public boolean deleteUserAccount(int id) {
+    //
+    // return userAccountService.deleteUserAccount(id);
+    // }
+    //
+    //
+    // public UserAccount getUserAccount(int id) {
+    //
+    // return userAccountService.getUserAccount(id);
+    // }
+    //
+    //
+    // public List<UserAccount> getAllUserAccounts() {
+    // return List.of();
+    // }
 
     public UserAccount login(String email, String password, String role) {
         return userAccountService.login(email, password, role);
@@ -49,11 +49,11 @@ public class UserAccountController {
         return userAccountService.addUserAccount(user);
     }
 
-    public boolean addUserAccount(UserAccount user) {
-            return false;
+    public boolean resetPassword(String email, String newPassword) {
+        return userAccountService.resetPasswordByEmail(email, newPassword);
     }
 
     public boolean isEmailExists(String email) {
-            return false;
+        return userAccountService.emailExists(email);
     }
 }

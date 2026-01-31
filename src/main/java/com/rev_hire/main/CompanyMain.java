@@ -7,25 +7,30 @@ import java.util.Scanner;
 
 public class CompanyMain {
 
-    public static void start() {
+    public static void start(Scanner sc) {
 
-        Scanner sc = new Scanner(System.in);
+        // Scanner sc = new Scanner(System.in);
         CompanyController controller = new CompanyController();
 
         while (true) {
             System.out.println("""
-                ==== COMPANY MENU ====
-                1. Create Company
-                2. View Company
-                3. View All Companies
-                4. Update Company
-                5. Delete Company
-                6. Back
-                """);
+                    ==== COMPANY MENU ====
+                    1. Create Company
+                    2. View Company
+                    3. View All Companies
+                    4. Update Company
+                    5. Delete Company
+                    6. Back
+                    """);
 
             System.out.print("Enter choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.println("❌ Please enter a valid number");
+                continue;
+            }
 
             switch (choice) {
 
@@ -50,7 +55,13 @@ public class CompanyMain {
 
                 case 2 -> {
                     System.out.print("Company ID: ");
-                    int id = sc.nextInt();
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine());
+                    } catch (Exception e) {
+                        System.out.println("❌ Invalid ID.");
+                        continue;
+                    }
                     Company c = controller.getCompany(id);
                     if (c != null) {
                         System.out.println("Name: " + c.getName());
@@ -67,8 +78,13 @@ public class CompanyMain {
 
                 case 4 -> {
                     System.out.print("Company ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine());
+                    } catch (Exception e) {
+                        System.out.println("❌ Invalid ID.");
+                        continue;
+                    }
 
                     Company c = controller.getCompany(id);
                     if (c != null) {
@@ -83,8 +99,13 @@ public class CompanyMain {
 
                 case 5 -> {
                     System.out.print("Company ID: ");
-                    System.out.println("Deleted: " +
-                            controller.deleteCompany(sc.nextInt()));
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine());
+                        System.out.println("Deleted: " + controller.deleteCompany(id));
+                    } catch (Exception e) {
+                        System.out.println("❌ Invalid ID.");
+                    }
                 }
 
                 case 6 -> {
